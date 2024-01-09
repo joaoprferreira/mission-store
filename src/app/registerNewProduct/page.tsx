@@ -15,8 +15,16 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { registerFormData, registerNewProductSchema } from './types'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function RegisterNewProduct() {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/login?callback=/registerNewProduct')
+    },
+  })
   const { register } = useForm<registerFormData>({
     resolver: zodResolver(registerNewProductSchema),
   })
