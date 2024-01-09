@@ -6,8 +6,11 @@ import Logo from '@/assets/logo-mission.png'
 import { Cart } from '../../../components/cart'
 import { ShoppingCartSimple } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 export default function Header() {
+  const { data: session, s } = useSession()
   const router = useRouter()
 
   async function handleRegisterNewProducts() {
@@ -21,17 +24,34 @@ export default function Header() {
         <h1 className="font-extrabold text-lg">Mission Store</h1>
       </div>
       <div className="flex justify-around gap-2">
-        <Button
-          variant="destructive"
-          onClick={() => handleRegisterNewProducts()}
-        >
-          Cadastrar novo produto
-        </Button>
-        <Cart>
-          <Button>
-            <ShoppingCartSimple width={50} height={25} />
-          </Button>
-        </Cart>
+        {session ? (
+          <>
+            <Button
+              variant="destructive"
+              onClick={() => handleRegisterNewProducts()}
+            >
+              Cadastrar novo produto
+            </Button>
+            <Cart>
+              <Button>
+                <ShoppingCartSimple width={50} height={25} />
+              </Button>
+            </Cart>
+            <Button variant={'destructive'} onClick={() => signOut()}>
+              Sair
+            </Button>
+            <Avatar>
+              <AvatarImage
+                src={`${session.user?.image}`}
+                alt="imagem do usuário"
+              />
+            </Avatar>
+          </>
+        ) : (
+          <>
+            <Button>Entrar</Button>
+          </>
+        )}
       </div>
     </main>
   )
