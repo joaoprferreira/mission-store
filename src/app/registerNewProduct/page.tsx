@@ -17,17 +17,27 @@ import { registerFormData, registerNewProductSchema } from './types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { api } from '@/lib/axios'
+import { AxiosError } from 'axios'
 
 export default function RegisterNewProduct() {
   const { data: session } = useSession({
-    required: true,
+    required: false,
     onUnauthenticated() {
       redirect('/login?callback=/registerNewProduct')
     },
   })
-  const { register } = useForm<registerFormData>({
+  const { register, handleSubmit } = useForm<registerFormData>({
     resolver: zodResolver(registerNewProductSchema),
   })
+
+  async function handleRegisterNewProduct(data: registerFormData) {
+    await api.post(`/products`, {
+      nameProduct: data.nameProduct,
+      descriptionProduct: data.descriptionProduct,
+      price: data.priceProduct,
+    })
+  }
 
   return (
     <div className="flex items-center justify-center w-[100%] h-screen bg-red">
@@ -36,7 +46,7 @@ export default function RegisterNewProduct() {
           <CardTitle>Cadastre um novo produto</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(handleRegisterNewProduct)}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Nome do produto</Label>
@@ -62,12 +72,12 @@ export default function RegisterNewProduct() {
                 />
               </div>
             </div>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline">Cancelar</Button>
+              <Button type="submit">Cadastrar</Button>
+            </CardFooter>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancelar</Button>
-          <Button>Cadastrar</Button>
-        </CardFooter>
       </Card>
     </div>
   )

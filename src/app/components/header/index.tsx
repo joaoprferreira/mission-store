@@ -10,7 +10,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 export default function Header() {
-  const { data: session, s } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
 
   async function handleRegisterNewProducts() {
