@@ -1,17 +1,6 @@
 import { create } from 'zustand'
-import { IProduct } from '../productStore/types'
 import { persist } from 'zustand/middleware'
-
-interface ICartItem extends IProduct {
-  quantity: number
-}
-
-interface ICartStoreState {
-  items: ICartItem[]
-  addToCart: (product: IProduct) => void
-  removeFromCart: (productId: IProduct) => void
-  clearCart?: () => void
-}
+import { ICartStoreState } from './types'
 
 const useCartStore = create<ICartStoreState>()(
   persist(
@@ -61,35 +50,5 @@ const useCartStore = create<ICartStoreState>()(
     { name: 'cart-storage' }
   )
 )
-
-const handleAddCart = (
-  state: ICartStoreState,
-  product: IProduct
-): ICartStoreState => {
-  const hasProductCart = state.items.find(
-    (item) => item.productId === product.productId
-  )
-
-  if (hasProductCart) {
-    return {
-      ...state,
-      items: state.items.map((item) =>
-        item.productId === hasProductCart.productId
-          ? { ...item, quantity: item.quantity++ }
-          : item
-      ),
-    }
-  }
-
-  return { ...state, items: [...state.items, { ...product, quantity: 1 }] }
-}
-
-// const handleRemoveCart = (
-//   state: ICartStoreState,
-//   productId: number
-// ): ICartStoreState => {
-//   const updateItems = state.items.filter((item) => item.productId !== productId)
-//   return { ...state, items: updateItems }
-// }
 
 export default useCartStore
