@@ -5,18 +5,21 @@ import {
   CardContent,
   CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from '../ui/card'
 import { Button } from '../ui/button'
 import { ShoppingCart, Trash } from 'phosphor-react'
 import { Separator } from '@/components/ui/separator'
+import useCartStore from '@/store/cartStore/useCartStore'
+import { IProduct } from '@/store/productStore/types'
+import { formatPrice } from '@/lib/utils'
 
 type TProduct = {
   nameProduct: string
   descriptionProduct: string
   priceProduct: number
   isCart?: boolean
+  product: IProduct
 }
 
 export default function CardProduct({
@@ -24,7 +27,10 @@ export default function CardProduct({
   nameProduct,
   priceProduct,
   isCart,
+  product,
 }: TProduct) {
+  const { addToCart, removeFromCart } = useCartStore()
+
   return (
     <>
       <Card
@@ -39,34 +45,37 @@ export default function CardProduct({
             {isCart ? (
               <CardDescription className="text-xl">Nome:</CardDescription>
             ) : (
-              ''
+              <CardTitle>{nameProduct}</CardTitle>
             )}
           </CardTitle>
-          {nameProduct}
         </CardContent>
         <CardContent className="flex align-center gap-2 ">
           <CardTitle className="flex gap-2">
             {isCart ? (
               <CardDescription className="text-xl">Descrição:</CardDescription>
             ) : (
-              ''
+              <CardDescription className="text-sm color-black">
+                {descriptionProduct}
+              </CardDescription>
             )}
           </CardTitle>
-          {descriptionProduct}
         </CardContent>
         <CardContent className="flex align-center gap-1">
           <CardTitle className="flex gap-2">
             {isCart ? (
-              <CardDescription className="text-xl">$:</CardDescription>
+              <CardDescription className="text-sm">
+                {formatPrice(priceProduct)}
+              </CardDescription>
             ) : (
-              ''
+              <CardDescription className="text-sm">
+                {formatPrice(priceProduct)}
+              </CardDescription>
             )}
           </CardTitle>
-          {priceProduct}
         </CardContent>
         {isCart ? (
           <div className="flex items-center gap-5 mx-5">
-            <Button>
+            <Button onClick={() => removeFromCart(product)}>
               <Trash />
             </Button>
 
@@ -76,8 +85,8 @@ export default function CardProduct({
           </div>
         ) : (
           <CardFooter>
-            <Button>
-              Adicionar ao carrinho!
+            <Button onClick={() => addToCart(product)} className="gap-2">
+              Adicionar ao carrinho
               <ShoppingCart />
             </Button>
           </CardFooter>
