@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react'
-
+import { v4 as uuidv4 } from 'uuid'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,27 +15,41 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { registerFormData, registerNewProductSchema } from './types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { api } from '@/lib/axios'
 import { AxiosError } from 'axios'
+import useProductStore from '@/store/productStore/useProductStore'
+import useCartStore from '@/store/cartStore/useCartStore'
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function RegisterNewProduct() {
+  const createNewProduct = useProductStore((state) => state.addProduct)
+  const { toast } = useToast()
+  const getProducts = useProductStore(({ products }) => products)
+  const useCart = useCartStore()
+
   const { data: session } = useSession({
     required: false,
     onUnauthenticated() {
       redirect('/login?callback=/registerNewProduct')
     },
   })
-  const { register, handleSubmit } = useForm<registerFormData>({
+
+  const router = useRouter()
+
+  const { register, handleSubmit, reset } = useForm<registerFormData>({
     resolver: zodResolver(registerNewProductSchema),
   })
 
   async function handleRegisterNewProduct(data: registerFormData) {
-    await api.post(`/products`, {
+    reset()
+    createNewProduct({
       nameProduct: data.nameProduct,
+      priceProduct: Number(data.priceProduct),
       descriptionProduct: data.descriptionProduct,
-      price: data.priceProduct,
+      productId: uuidv4(),
     })
   }
 
@@ -72,9 +86,30 @@ export default function RegisterNewProduct() {
                 />
               </div>
             </div>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline">Cancelar</Button>
-              <Button type="submit">Cadastrar</Button>
+            <CardFooter className="flex justify-between align-center pt-10">
+              <Button variant="outline" onClick={() => router.back()}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                onClick={() => {
+                  reset()
+                  toast({
+                    className: 'flex bg-green-600	text-white',
+                    variant: 'default',
+                    duration: 1500,
+                    title: 'Produto criado com sucesso!',
+                    description: 'Vá até a listagem de produtos',
+                    action: (
+                      <ToastAction altText="Try again" className="">
+                        Sair
+                      </ToastAction>
+                    ),
+                  })
+                }}
+              >
+                Cadastrar
+              </Button>
             </CardFooter>
           </form>
         </CardContent>
