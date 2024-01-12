@@ -1,22 +1,21 @@
 'use client'
 import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '../ui/card'
 import { Button } from '../ui/button'
 import { ShoppingCart } from 'phosphor-react'
 import CardProduct from '../cardProduct'
+import { IProduct } from '@/store/productStore/types'
 
-export default function Products() {
+type IProducts = {
+  product: IProduct
+}
+
+export default function Products({ product }: IProducts) {
   return (
     <CardProduct
-      nameProduct="nome do produto"
-      descriptionProduct="descrição do produto"
-      priceProduct={100}
+      nameProduct={product.nameProduct}
+      descriptionProduct={product.descriptionProduct}
+      priceProduct={product.priceProduct}
+      product={product}
     />
   )
 }
