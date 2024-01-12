@@ -1,25 +1,19 @@
-import { Cart } from '@/components/cart'
+'use client'
 import Header from '@/app/components/header'
 import Products from '@/components/products'
-import Image from 'next/image'
+import useProductStore from '@/store/productStore/useProductStore'
 
 export default function Home() {
+  const getProducts = useProductStore((state) => state.products)
   return (
-    <main className="flex  max-h-screen flex-col p-20 gap-20">
+    <main className="flex  max-h-screen flex-col py-5 pl-5 gap-20">
       <Header />
       <div className="grid grid-cols-3 gap-4 overflow-auto h-screen items-center">
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
-        <Products />
+        {getProducts.map((item) => (
+          <>
+            <Products product={item} />
+          </>
+        ))}
       </div>
     </main>
   )
