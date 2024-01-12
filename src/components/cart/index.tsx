@@ -12,54 +12,31 @@ import {
 } from '@/components/ui/drawer'
 import CardProduct from '../cardProduct'
 import { Separator } from '../ui/separator'
+import useCartStore from '@/store/cartStore/useCartStore'
 
 type TCart = {
   children: React.ReactNode
 }
 
 export function Cart({ children }: TCart) {
+  const useStore = useCartStore()
+
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="flex items-center justify-center h-[80%] ">
         <div className="flex w-[100%] h-[100%] justify-center items-center">
           <div className="flex mx-10 my-10 w-[50%] max-h-[100%]  grid grid-cols-1 overflow-auto p-20 gap-10">
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />{' '}
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />{' '}
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />{' '}
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />{' '}
-            <CardProduct
-              isCart
-              nameProduct={`nome do produto`}
-              descriptionProduct="descrição do produto"
-              priceProduct={100}
-            />
+            {useStore.items.map((item) => (
+              <CardProduct
+                key={item.productId}
+                isCart
+                nameProduct={item.nameProduct}
+                descriptionProduct={item.descriptionProduct}
+                priceProduct={item.priceProduct}
+                product={item}
+              />
+            ))}
           </div>
 
           <div className="flex-col w-[30%] h-[30%] items-center justify-center border rounded-lg">
