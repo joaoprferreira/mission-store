@@ -8,10 +8,12 @@ import { ShoppingCartSimple } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import useCartStore from '@/store/cartStore/useCartStore'
 
 export default function Header() {
   const { data: session } = useSession()
   const router = useRouter()
+  const useCart = useCartStore()
 
   async function handleRegisterNewProducts() {
     await router.push('/registerNewProduct')
@@ -33,9 +35,25 @@ export default function Header() {
               Cadastrar novo produto
             </Button>
             <Cart>
-              <Button>
-                <ShoppingCartSimple width={50} height={25} />
-              </Button>
+              <div className="flex  cursor-pointer relative">
+                <Button className="p-5">
+                  <span
+                    className="
+                  bg-teal-600 
+                  text-sm 
+                  font-bold 
+                  rounded-full 
+                  h-5 w-5
+                  flex items-center justify-center
+                  absolute
+                  right-5
+                  top-1"
+                  >
+                    {useCart.items?.length}
+                  </span>
+                  <ShoppingCartSimple width={50} height={25} />
+                </Button>
+              </div>
             </Cart>
             <Button variant={'destructive'} onClick={() => signOut()}>
               Sair
