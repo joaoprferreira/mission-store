@@ -6,6 +6,7 @@ import useProductStore from '@/store/productStore/useProductStore'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import SearchProducts from '../searchProducts'
+import { ICartItem } from '@/store/cartStore/types'
 
 export default function ListProducts() {
   const getProducts = useProductStore((state) => state.products)
@@ -21,7 +22,7 @@ export default function ListProducts() {
 
   const products = filteredProducts ? filteredProducts : getProducts
 
-  const prevMyStateRef = useRef([])
+  const prevMyStateRef = useRef<ICartItem[]>([])
 
   useEffect(() => {
     const currentItems = items
@@ -48,7 +49,7 @@ export default function ListProducts() {
           ),
         })
       }
-    } else if (currentItems.length < prevMyStateRef.current) {
+    } else if (currentItems.length < prevMyStateRef.current.length) {
       toast({
         className: 'flex	text-white',
         variant: 'destructive',
