@@ -64,7 +64,10 @@ export default function Header() {
               Sair
             </Button>
             <Avatar>
-              <AvatarImage src={`${session}`} alt="imagem do usuário" />
+              <AvatarImage
+                src={`${session.user?.image}`}
+                alt="imagem do usuário"
+              />
             </Avatar>
           </>
         ) : (
