@@ -2,6 +2,7 @@ import NextAuth, { type NextAuthOptions } from 'next-auth'
 
 import ProviderGoogle from 'next-auth/providers/google'
 import ProviderGithub from 'next-auth/providers/github'
+import useRoute from 'next/navigation'
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -23,6 +24,14 @@ export const authOptions: NextAuthOptions = {
   ],
 
   pages: {
-    signIn: '/login',
+    signIn: '/auth/login',
+  },
+
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    },
   },
 }
