@@ -36,41 +36,47 @@ export function Cart({ children }: TCart) {
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="flex items-center justify-center h-[80%] ">
-        <div className="flex w-[100%] h-[100%] justify-center items-center">
-          <div className="flex mx-10 my-10 w-[50%] max-h-[100%]  grid grid-cols-1 overflow-auto p-20 gap-10">
-            {items.map((item) => (
-              <CardProduct
-                key={item.productId}
-                isCart
-                nameProduct={item.nameProduct}
-                descriptionProduct={item.descriptionProduct}
-                quantity={item.quantity}
-                priceProduct={Number(item.priceProduct)}
-                product={item}
-              />
-            ))}
-          </div>
+        {items.length ? (
+          <div className="flex w-[100%] h-[100%] justify-center items-center">
+            <div className="flex mx-10 my-10 w-[50%] max-h-[100%]  grid grid-cols-1 overflow-auto p-20 gap-10">
+              {items.map((item) => (
+                <CardProduct
+                  key={item.productId}
+                  isCart
+                  nameProduct={item.nameProduct}
+                  descriptionProduct={item.descriptionProduct}
+                  quantity={item.quantity}
+                  priceProduct={Number(item.priceProduct)}
+                  product={item}
+                />
+              ))}
+            </div>
 
-          <div className="flex-col w-[30%] h-[30%] items-center justify-center border rounded-lg">
-            <DrawerHeader className="gap-5">
-              <div className="flex justify-between my-20">
-                <DrawerTitle>Total: </DrawerTitle>
-                <DrawerTitle>{formatPrice(cartTotal())}</DrawerTitle>
-              </div>
-            </DrawerHeader>
-            <Separator />
-            <div className="w-[100%] h-[50%] flex-col flex items-center justify-center gap-5 my-3">
-              <Button size="lg" className="w-[90%]">
-                Finalizar
-              </Button>
-              <DrawerClose asChild>
-                <Button variant="outline" size="lg" className="w-[90%]">
-                  Cancelar
+            <div className="flex-col w-[30%] h-[30%] items-center justify-center border rounded-lg">
+              <DrawerHeader className="gap-5">
+                <div className="flex justify-between my-20">
+                  <DrawerTitle>Total: </DrawerTitle>
+                  <DrawerTitle>{formatPrice(cartTotal())}</DrawerTitle>
+                </div>
+              </DrawerHeader>
+              <Separator />
+              <div className="w-[100%] h-[50%] flex-col flex items-center justify-center gap-5 my-3">
+                <Button size="lg" className="w-[90%]">
+                  Finalizar
                 </Button>
-              </DrawerClose>
+                <DrawerClose asChild>
+                  <Button variant="outline" size="lg" className="w-[90%]">
+                    Cancelar
+                  </Button>
+                </DrawerClose>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <h1 className="flex flex-col gap-5 items-center justify-center h-screen animate-pulse">
+            Adicione um produto ao carrinho!
+          </h1>
+        )}
       </DrawerContent>
     </Drawer>
   )
