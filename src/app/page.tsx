@@ -4,7 +4,6 @@ import Header from '@/app/(products)/_components/header'
 import Products from '@/components/products'
 import useProductStore from '@/store/productStore/useProductStore'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
 import ListProducts from './(products)/_components/listProducts'
 
 export default function Home() {
