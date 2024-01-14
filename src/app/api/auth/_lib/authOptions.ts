@@ -1,8 +1,7 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth'
+import { type NextAuthOptions } from 'next-auth'
 
 import ProviderGoogle from 'next-auth/providers/google'
 import ProviderGithub from 'next-auth/providers/github'
-import useRoute from 'next/navigation'
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
