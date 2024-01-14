@@ -18,20 +18,24 @@ const useCartStore = create<ICartStoreState>()(
               }
               return p
             })
-            return { cart: updateCart }
+            return { items: updateCart }
           } else {
             return {
               items: [...state.items, { ...item, quantity: 1 }],
             }
           }
         }),
-      removeFromCart: (item) =>
+      removeFromCart: (item, isDecreasing) =>
         set((state) => {
           const hasProductInCart = state.items.find(
             (p) => p.productId === item.productId
           )
 
-          if (hasProductInCart && hasProductInCart.quantity! > 1) {
+          if (
+            hasProductInCart &&
+            isDecreasing &&
+            hasProductInCart.quantity! > 1
+          ) {
             const updateCart = state.items.map((p) => {
               if (p.productId === item.productId) {
                 return { ...p, quantity: p.quantity! - 1 }
