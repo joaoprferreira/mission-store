@@ -1,16 +1,18 @@
 'use client'
 import React from 'react'
-import { Button } from '../../../components/ui/button'
+import { Button } from '../../../../components/ui/button'
 import Image from 'next/image'
 import Logo from '@/assets/logo-mission.png'
-import { Cart } from '../../../components/cart'
+import { Cart } from '../../../../components/cart'
 import { ShoppingCartSimple } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import useCartStore from '@/store/cartStore/useCartStore'
+import useProductStore from '@/store/productStore/useProductStore'
 
 export default function Header() {
+  const getProducts = useProductStore((state) => state.products)
   const { data: session } = useSession()
   const router = useRouter()
   const useCart = useCartStore()
@@ -19,8 +21,10 @@ export default function Header() {
     await router.push('/registerNewProduct')
   }
 
+  const hasProdutcs = getProducts.length
+
   return (
-    <main className="flex justify-between align-center">
+    <main className="flex justify-around items-center">
       <div className="flex items-center justify-center gap-5">
         <Image alt="Logo mission" src={Logo} width={100} height={100} />
         <h1 className="font-extrabold text-lg">Mission Store</h1>
@@ -30,6 +34,7 @@ export default function Header() {
           <>
             <Button
               variant="destructive"
+              className={`animate-${hasProdutcs ? 'none' : 'pulse'}`}
               onClick={() => handleRegisterNewProducts()}
             >
               Cadastrar novo produto
@@ -59,10 +64,7 @@ export default function Header() {
               Sair
             </Button>
             <Avatar>
-              <AvatarImage
-                src={`${session.user?.image}`}
-                alt="imagem do usuário"
-              />
+              <AvatarImage src={`${session}`} alt="imagem do usuário" />
             </Avatar>
           </>
         ) : (
