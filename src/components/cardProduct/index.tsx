@@ -32,9 +32,6 @@ export default function CardProduct({
   quantity,
 }: TProduct) {
   const { addToCart, removeFromCart } = useCartStore()
-
-  console.log('Quantity:', quantity)
-
   return (
     <>
       <Card

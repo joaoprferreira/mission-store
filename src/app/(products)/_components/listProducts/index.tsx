@@ -4,7 +4,7 @@ import { toast } from '@/components/ui/use-toast'
 import useCartStore from '@/store/cartStore/useCartStore'
 import useProductStore from '@/store/productStore/useProductStore'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import SearchProducts from '../searchProducts'
 import { ICartItem } from '@/store/cartStore/types'
 
