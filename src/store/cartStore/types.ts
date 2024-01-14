@@ -7,6 +7,6 @@ export interface ICartItem extends IProduct {
 export interface ICartStoreState {
   items: ICartItem[]
   addToCart: (product: IProduct) => void
-  removeFromCart: (productId: IProduct) => void
+  removeFromCart: (productId: IProduct, isDecreasing: boolean) => void
   clearCart?: () => void
 }
