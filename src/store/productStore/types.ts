@@ -1,8 +1,9 @@
 export interface IProduct {
   productId: string
   nameProduct: string
-  priceProduct: number
+  priceProduct: number | string
   descriptionProduct: string
+  quantity: number
 }
 
 export interface CartItem extends IProduct {
