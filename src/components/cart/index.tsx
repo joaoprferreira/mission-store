@@ -13,13 +13,24 @@ import {
 import CardProduct from '../cardProduct'
 import { Separator } from '../ui/separator'
 import useCartStore from '@/store/cartStore/useCartStore'
+import { formatPrice } from '@/lib/utils'
+import { number } from 'zod'
 
 type TCart = {
   children: React.ReactNode
 }
 
 export function Cart({ children }: TCart) {
-  const useStore = useCartStore()
+  const { items } = useCartStore()
+
+  const cartSubtotal = (preco: number, quantidade: number) => preco * quantidade
+
+  const cartTotal = () => {
+    return items.reduce((total, item) => {
+      const quantityCart = item.quantity
+      return total + cartSubtotal(item.priceProduct as number, quantityCart)
+    }, 0)
+  }
 
   return (
     <Drawer>
@@ -27,13 +38,14 @@ export function Cart({ children }: TCart) {
       <DrawerContent className="flex items-center justify-center h-[80%] ">
         <div className="flex w-[100%] h-[100%] justify-center items-center">
           <div className="flex mx-10 my-10 w-[50%] max-h-[100%]  grid grid-cols-1 overflow-auto p-20 gap-10">
-            {useStore.items.map((item) => (
+            {items.map((item) => (
               <CardProduct
                 key={item.productId}
                 isCart
                 nameProduct={item.nameProduct}
                 descriptionProduct={item.descriptionProduct}
-                priceProduct={item.priceProduct}
+                quantity={item.quantity}
+                priceProduct={Number(item.priceProduct)}
                 product={item}
               />
             ))}
@@ -41,13 +53,9 @@ export function Cart({ children }: TCart) {
 
           <div className="flex-col w-[30%] h-[30%] items-center justify-center border rounded-lg">
             <DrawerHeader className="gap-5">
-              <div className="flex justify-between">
-                <DrawerTitle>Subtotal: </DrawerTitle>
-                <DrawerTitle>R$: 150</DrawerTitle>
-              </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between my-20">
                 <DrawerTitle>Total: </DrawerTitle>
-                <DrawerTitle>R$: 150</DrawerTitle>
+                <DrawerTitle>{formatPrice(cartTotal())}</DrawerTitle>
               </div>
             </DrawerHeader>
             <Separator />
