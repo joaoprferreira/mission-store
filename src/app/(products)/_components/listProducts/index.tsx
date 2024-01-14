@@ -11,7 +11,6 @@ import { ICartItem } from '@/store/cartStore/types'
 export default function ListProducts() {
   const getProducts = useProductStore((state) => state.products)
   const { items } = useCartStore()
-  const [toggleButton, setToggleButton] = useState(false)
   const searchParams = useSearchParams().get('query')
 
   const filteredProducts = getProducts.filter((product) => {
@@ -26,8 +25,6 @@ export default function ListProducts() {
 
   useEffect(() => {
     const currentItems = items
-    console.log('currentItemsLength', prevMyStateRef.current)
-
     if (
       prevMyStateRef.current !== undefined &&
       prevMyStateRef.current !== items

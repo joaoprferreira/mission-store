@@ -3,10 +3,10 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { ShoppingCart } from 'phosphor-react'
 import CardProduct from '../cardProduct'
-import { IProduct } from '@/store/productStore/types'
+import { CartItem, IProduct } from '@/store/productStore/types'
 
 type IProducts = {
-  product: IProduct
+  product: CartItem
 }
 
 export default function Products({ product }: IProducts) {
@@ -14,7 +14,8 @@ export default function Products({ product }: IProducts) {
     <CardProduct
       nameProduct={product.nameProduct}
       descriptionProduct={product.descriptionProduct}
-      priceProduct={product.priceProduct}
+      priceProduct={Number(product?.priceProduct)}
+      quantity={product.quantity}
       product={product}
     />
   )
