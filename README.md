@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Mission Store
 
-## Getting Started
+# Demonstração do projeto
 
-First, run the development server:
+O projeto está no ar [http://mission-store.com.br](https://mission-store-u7o6.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Tecnologias Utilizadas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- NextJs(14)
+- Zustand
+- Typescript
+- Shadcn/ui - radix-ui
+- Zod
+- Tailwind
+- React Hook Form
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Recursos principais
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Criar um produto
+- Adicionar o produto na loja
+- Adicionar/remover produtos do carrinho de compras
+- login
 
-## Learn More
+## Pré requisitos
 
-To learn more about Next.js, take a look at the following resources:
+- NodeJs > 20
+- Nextjs > 14
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estrutura do projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `src/app/(products)`: Agrupamento de páginas tudo relacionado a produtos.
+- `src/app/api/auth`: Configurações de autenticação.
+- `src/components`: Components genéricos da aplicação.
+- `src/components/ui`: Components genéricos da aplicação com shadcn/ui.
+- `src/lib`: Configurações e utilitários.
+- `src/store`: Store com estados globais(zustand).
 
-## Deploy on Vercel
+# Demo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Demo](src/assets/representação.png)
+![Demo](src/assets/carrinho%20de%20compras.png)
+![Demo](src/assets/login.png)
